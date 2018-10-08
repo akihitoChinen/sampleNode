@@ -1,33 +1,50 @@
 <!DOCTYPE html>
 <html lang="ja">
+
+<head>
+    <meta http-equiv="content-type"
+        content="text/html"; charset=UTF-8">
+    <title>ミニ掲示板</title>
+    <link type="text/css" href="./style.css" rel="stylesheet">
+    <script>
+        function init() {
+            var id = localStorage.getItem('id');
+            if (id == null){
+                location.href = './login';
+            }
+            document.querySelector('#id').textContent = 'ID:' + id;
+            document.querySelector('#id_input').value = id;
+        }
+    </script>
+</head>
+
+<body onload="init();">
     <head>
-        <meta http-equiv="content-type"
-            content="text/html"; charset=UTF-8">
-        <title><%=title %></title>
-        <link type="text/css" href="./style.css" rel="stylesheet">
+        <h1>掲示板</h1>
     </head>
-
-    <body>
-        <head>
-            <link type="text/css" href="./style.css" rel="stylesheet">
-            <h1><%=title %></h1>
-        </head>
             
-        <div role="main"> 
-            <p><%=content %></p>
-
-            <p><table style="width:400px;">
-                <tr><th>伝言です！</th></tr>
-                <tr><td><%=data.msg %></td></tr>
-            </table></p>
-
-            <p>your last message:<%= cookie_data %></p>
+    <div role="main"> 
+        <p>※メッセージは最大10個まで保管されます。</p>
+        <form method="post" action="/">
             <p>
-                <form method="post" action="/">        
-                    MESSAGE <input type="text" name="msg">
-                    <input type="submit" value="送信">
-                </form>
+                <span id="id"></span>
+                <input type="hidden" id="id_input" name="id" value="">
             </p>
-        </div>
-    </body>
+            <p>
+                <input type="text" name="msg">
+                <input type="submit" value="送信">
+            </p>
+        </form>
+
+        <hr>
+        <p>
+            <table style="width:85%;">
+                <% for(var i in data) { %>
+                    <%- include('data_item', {val:data[i]}) %>
+                <% } %>
+            </table>
+        </p>
+    </div>
+</body>
+
 </html>
